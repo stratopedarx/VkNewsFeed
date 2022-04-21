@@ -1,0 +1,46 @@
+disabled_rules:
+    - no_space_in_method_call
+    - line_length
+    - trailing_whitespace
+    - multiple_closures_with_trailing_closure
+    - orphaned_doc_comment
+    - comma
+    - identifier_name
+
+opt_in_rules:
+    - weak_delegate
+    - required_enum_case
+
+warning_threshold: 1
+
+file_length:
+    warning: 410
+
+custom_rules:
+    already_true:
+        name: "Already true"
+        regex: "== true"
+        message: "Don't compare to true, just use the bool value."
+        severity: warning
+    already_bool:
+        name: "Already bool"
+        regex: "== false"
+        message: "Don't compare to false, just use !value."
+        severity: warning
+    camel_var_naming:
+        name: "Camel var naming"
+        regex: "var [A-Z][a-zA-Z0-9]+"
+        severity: warning
+    camel_let_naming:
+        name: "Camel let naming"
+        regex: "let [A-Z][a-zA-Z0-9]+"
+        severity: warning
+    camel_func_naming:
+        name: "Camel let naming"
+        regex: "func [A-Z][a-zA-Z0-9]+"
+        severity: warning
+    comments_space:
+        name: "Space After Comment"
+        regex: '(^ *//\w+)'
+        message: "There should be a space after //"
+        severity: warning
