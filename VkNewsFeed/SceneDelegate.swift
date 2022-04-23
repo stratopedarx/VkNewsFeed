@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import VKSdkFramework
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var authService: AuthService!
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
@@ -18,7 +20,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new
         // (see `application:configurationForConnectingSceneSession` instead).
-        guard (scene as? UIWindowScene) != nil else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        // объявляем контроллер, с которого начнется приложение. Первоначальный экран авторизации AuthViewController.
+
+        // 1. инициализируем window и передаем границы нашей сцены
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
+
+        // 2. Инициализируем наш Auth service
+        authService = AuthService()
+
+        // 3. Добираемся до ВК auth
+        let authVC = UIStoryboard(name: "AuthViewController", bundle: nil)
+            .instantiateInitialViewController() as? AuthViewController
+        // 4. Назначаем рут ВК
+        window?.rootViewController = authVC
+        window?.makeKeyAndVisible()
+    }
+
+    // проверяем, что первая url, которую мы получаем, будет являться нашим нужным url
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            VKSdk.processOpen(url, fromApplication: UIApplication.OpenURLOptionsKey.sourceApplication.rawValue)
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

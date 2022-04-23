@@ -17,6 +17,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    // вызываем эту функцию для того, что бы она могла открывать url. Будем явно указывать какую ссылку мы хотим
+    // открывать и на какую ссылку сафари будет сразу перенаправлять, когда хотим авторизоваться или зарег-я через вк.
+    // Данная функция просит AppDelegate открывать ресурс, указанный по url и предоставит нам словарь опций запуска,
+    // что бы мы открыли нужную страницу. Еще часть логики будет настраиваться в SceneDelegate.
+    func application(_ app: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        // OpenURLOptionsKey - здесь хранятся ключи, используемые для доступа к значениям в словаре паратметров
+        // при открытии URL. sourceApplication - содержит идентификатор пакета приложений.
+        VKSdk.processOpen(url, fromApplication: UIApplication.OpenURLOptionsKey.sourceApplication.rawValue)
+        return true
+    }
+
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession,
