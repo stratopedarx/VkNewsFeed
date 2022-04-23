@@ -13,6 +13,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     var authService: AuthService!
 
+    // сделаем Синглтоном, что бы была единственная точка входа. Тогда будет везде один authService
+    static func shared() -> SceneDelegate {
+        // сначала достаем сцену
+        let scene = UIApplication.shared.connectedScenes.first
+        let sceneDelegate: SceneDelegate = ((scene?.delegate as? SceneDelegate)!)
+        return sceneDelegate
+    }
+
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure
@@ -29,6 +37,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // 2. Инициализируем наш Auth service
         authService = AuthService()
+        // кто будет реализовывать все методы AuthServiceDelegate
+        authService.delegate = self
 
         // 3. Добираемся до ВК auth
         let authVC = UIStoryboard(name: "AuthViewController", bundle: nil)
@@ -73,4 +83,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
+}
+
+// MARK: - AuthServiceDelegate
+
+extension SceneDelegate: AuthServiceDelegate {
+    func authServiceShouldShow(viewController: UIViewController) {
+        print(#function)
+        window?.rootViewController?.present(viewController, animated: true, completion: nil)
+    }
+
+    func authServiceSignIn() {
+        print(#function)
+        // после успешной авторизации хотим открывать новый ВК
+        if let feedVC = UIStoryboard(name: "FeedViewControler", bundle: nil)
+            .instantiateInitialViewController() as? FeedViewController {
+            let navigationVC = UINavigationController(rootViewController: feedVC)  // добавим еще navigation vc
+            window?.rootViewController = navigationVC
+        }
+    }
+
+    func authServiceSignInDidFail() {
+        print(#function)
+    }
+
 }
