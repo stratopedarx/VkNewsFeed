@@ -41,7 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         authService.delegate = self
 
         // 3. Добираемся до ВК auth
-        let authVC = UIStoryboard(name: "AuthViewController", bundle: nil)
+        let authVC = UIStoryboard(name: AuthService.identifier, bundle: nil)
             .instantiateInitialViewController() as? AuthViewController
         // 4. Назначаем рут ВК
         window?.rootViewController = authVC
@@ -96,7 +96,7 @@ extension SceneDelegate: AuthServiceDelegate {
     func authServiceSignIn() {
         print(#function)
         // после успешной авторизации хотим открывать новый ВК
-        if let feedVC = UIStoryboard(name: "FeedViewControler", bundle: nil)
+        if let feedVC = UIStoryboard(name: FeedViewController.identifier, bundle: nil)
             .instantiateInitialViewController() as? FeedViewController {
             let navigationVC = UINavigationController(rootViewController: feedVC)  // добавим еще navigation vc
             window?.rootViewController = navigationVC

@@ -8,6 +8,7 @@
 import UIKit
 
 class FeedViewController: UIViewController {
+    static let identifier = "FeedViewController"
 
     override func viewDidLoad() {
         super.viewDidLoad()

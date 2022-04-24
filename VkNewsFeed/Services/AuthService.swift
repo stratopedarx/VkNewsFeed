@@ -17,6 +17,7 @@ protocol AuthServiceDelegate: AnyObject {
 }
 
 class AuthService: NSObject {
+    static let identifier = "AuthViewController"
     // id нашего приложения
     private let appId = "8144980"
     private let vkSdk: VKSdk
@@ -32,7 +33,7 @@ class AuthService: NSObject {
 
     // проверяет авторизирован в приложении или нет
     func wakeAppSession() {
-        let scope = ["offline"]
+        let scope = Constants.ApiVKSdk.scope
         VKSdk.wakeUpSession(scope) { [delegate] state, _ in
             // [delegate] - создает некую копию делегата, таким образом утечки памяти точно не произойдет.
             switch state {
