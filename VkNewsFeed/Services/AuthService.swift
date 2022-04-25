@@ -63,7 +63,6 @@ extension AuthService: VKSdkDelegate, VKSdkUIDelegate {
     func vkSdkAccessAuthorizationFinished(with result: VKAuthorizationResult!) {
         print(#function)
         if result.token != nil {
-            print("token: \(result.token)")
             delegate?.authServiceSignIn()
         }
     }
