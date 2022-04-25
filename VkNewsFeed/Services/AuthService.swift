@@ -23,6 +23,10 @@ class AuthService: NSObject {
     private let vkSdk: VKSdk
     weak var delegate: AuthServiceDelegate?  // что бы использовать методы делегата, то через weak  добавляем.
 
+    var token: String? {
+        return VKSdk.accessToken().accessToken
+    }
+
     override init() {
         vkSdk = VKSdk.initialize(withAppId: appId)
         super.init()
